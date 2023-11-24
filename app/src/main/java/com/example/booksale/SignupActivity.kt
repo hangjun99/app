@@ -2,6 +2,8 @@ package com.example.booksale
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -74,7 +76,24 @@ class SignupActivity : AppCompatActivity() {
             queue.add(nicknameCheckActivity)
         })
 
+        //비밀번호 일치 여부
+        PasswordCheck.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // no-op
+            }
 
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // no-op
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                val password = Password.text.toString()
+                val confirmPassword = s.toString()
+
+                // 비밀번호가 일치하지 않으면 회원가입 버튼 비활성화
+                Signup.isEnabled = password == confirmPassword
+            }
+        })
 
         //회원가입 버튼 이벤트
         Signup!!.setOnClickListener{

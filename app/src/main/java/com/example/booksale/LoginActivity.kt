@@ -14,23 +14,23 @@ import org.json.JSONException
 import org.json.JSONObject
 
 class LoginActivity: AppCompatActivity(){
-    lateinit var ID: EditText
-    lateinit var Password: EditText
+    lateinit var userID: EditText
+    lateinit var userPassword: EditText
     lateinit var Login: Button
     lateinit var Signup: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
 
-        ID = findViewById<EditText>(R.id.Put_ID)
-        Password = findViewById<EditText>(R.id.Put_Pass)
+        userID = findViewById<EditText>(R.id.Put_ID)
+        userPassword = findViewById<EditText>(R.id.Put_Pass)
         Login = findViewById<Button>(R.id.Login_btn)
         Signup = findViewById<Button>(R.id.Register_btn)
 
         //로그인 버튼 이벤트
         Login.setOnClickListener(View.OnClickListener{
-            val id= ID.getText().toString()
-            val pw = Password.getText().toString()
+            val ID= userID.getText().toString()
+            val Password = userPassword.getText().toString()
             val responseListener: Response.Listener<String?> = object: Response.Listener<String?>{
                 override fun onResponse(response: String?){
                     try{
@@ -41,6 +41,12 @@ class LoginActivity: AppCompatActivity(){
                             Toast.makeText(
                                 applicationContext, "로그인 성공.ID: $msg", Toast.LENGTH_SHORT
                             ).show()
+                            val Pw = jsonObject.getString("Password")
+                            val intent = Intent(applicationContext, MainActivity::class.java)
+                            // 로그인 하면서 사용자 정보 넘기기
+                            intent.putExtra("ID", msg)
+                            intent.putExtra("Password",Pw)
+                            startActivity(intent)
                         } else {
                             Toast.makeText(applicationContext,"실패", Toast.LENGTH_SHORT).show()
                             return
@@ -54,7 +60,7 @@ class LoginActivity: AppCompatActivity(){
                     }
                 }
             }
-            val loginRequestActivity = LoginRequestActivity(id,pw, responseListener)
+            val loginRequestActivity = LoginRequestActivity(ID,Password, responseListener)
             val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
             queue.add(loginRequestActivity)
         })

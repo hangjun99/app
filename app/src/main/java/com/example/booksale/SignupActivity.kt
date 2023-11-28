@@ -104,28 +104,29 @@ class SignupActivity : AppCompatActivity() {
             val username = UserName!!.text.toString()
             val phonenum = PhoneNum!!.text.toString()
             val responseListener: Response.Listener<String?> = Response.Listener<String?>{ response ->
-            try{
-                val jsonObject = JSONObject(response)
-                val success = jsonObject.getBoolean("success")
-                if(success){
-                    Toast.makeText(applicationContext,"회원가입이 성공적으로 처리되었습니다.", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this@SignupActivity, LoginActivity::class.java)
-                    startActivity(intent)
-                } else{
-                    Toast.makeText(applicationContext, "회원가입 요청처리 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                try{
+                    val jsonObject = JSONObject(response)
+                    val success = jsonObject.getBoolean("success")
+                    if(success){
+                        Toast.makeText(applicationContext,"회원가입이 성공적으로 처리되었습니다.", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@SignupActivity, LoginActivity::class.java)
+                        startActivity(intent)
+                    } else{
+                        Toast.makeText(applicationContext, "회원가입 요청처리 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                        return@Listener
+                    }
+                } catch (e:JSONException){
+                    e.printStackTrace()
+                    Toast.makeText(applicationContext,"예외 1", Toast.LENGTH_SHORT).show()
                     return@Listener
+                } catch (e:JSONException){
+                    e.printStackTrace()
                 }
-            } catch (e:JSONException){
-                e.printStackTrace()
-                Toast.makeText(applicationContext,"예외 1", Toast.LENGTH_SHORT).show()
-                return@Listener
-            } catch (e:JSONException){
-                e.printStackTrace()
             }
-        }
             val signupRequestActivity = SignupRequestActivity(id, pw, username,nickname, phonenum, responseListener)
             val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
             queue.add(signupRequestActivity)
         }
     }
 }
+

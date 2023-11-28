@@ -7,7 +7,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.volley.RequestQueue
 import com.android.volley.Response
 import com.android.volley.toolbox.Volley
 import org.json.JSONException
@@ -28,41 +27,48 @@ class MainActivity : AppCompatActivity() {
         Signup = findViewById<Button>(R.id.Register_btn)
 
         //로그인 버튼 이벤트
-        Login.setOnClickListener(View.OnClickListener{
-            val ID= userID.getText().toString()
+        Login.setOnClickListener(View.OnClickListener {
+            val ID = userID.getText().toString()
             val Password = userPassword.getText().toString()
-            val responseListener: Response.Listener<String?> = object: Response.Listener<String?>{
-                override fun onResponse(response: String?){
-                    try{
+            val responseListener =
+                Response.Listener<String?> { response ->
+                    try {
                         val jsonObject = JSONObject(response)
                         val success = jsonObject.getBoolean("success")
-                        if(success) {
+                        if (success) {
                             val msg = jsonObject.getString("ID")
                             Toast.makeText(
-                                applicationContext, "로그인 성공.ID: $msg", Toast.LENGTH_SHORT
+                                applicationContext,
+                                "로그인 성공. ID :$msg",
+                                Toast.LENGTH_SHORT
                             ).show()
-
                         } else {
-                            Toast.makeText(applicationContext,"실패", Toast.LENGTH_SHORT).show()
-                            return
+                            Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
+                            return@Listener
                         }
-                    } catch(e:JSONException){
+                    } catch (e: JSONException) {
                         e.printStackTrace()
                         Toast.makeText(applicationContext, "예외 1", Toast.LENGTH_SHORT).show()
-                        return
-                    }catch (e:Exception){
+                        return@Listener
+                    } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
-            }
-            val loginRequestActivity = LoginRequestActivity(ID,Password, responseListener)
-            val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
+            val loginRequestActivity = LoginRequestActivity(ID, Password, responseListener)
+            val queue = Volley.newRequestQueue(applicationContext)
             queue.add(loginRequestActivity)
         })
 
-        //회원가입 버튼
-        Signup.setOnClickListener(View.OnClickListener{
-            val intent = Intent(applicationContext, SignupActivity::class.java)
+
+        //회원가입 버튼 이벤트
+        Signup.setOnClickListener(View.OnClickListener {
+            try {
+                val intent = Intent(applicationContext, SignupActivity::class.java)
+                startActivity(intent)
+            }   catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(applicationContext, "예외 발생: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         })
     }
 }

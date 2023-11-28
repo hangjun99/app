@@ -65,9 +65,15 @@ class LoginActivity: AppCompatActivity(){
             queue.add(loginRequestActivity)
         })
 
-        //회원가입 버튼
-        Signup.setOnClickListener(View.OnClickListener{
-            val intent = Intent(applicationContext, SignupActivity::class.java)
+        //회원가입 버튼 이벤트
+        Signup.setOnClickListener(View.OnClickListener {
+            try {
+                val intent = Intent(applicationContext, SignupActivity::class.java)
+                startActivity(intent)
+            }   catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(applicationContext, "예외 발생: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
         })
     }
 }

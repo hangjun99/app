@@ -62,8 +62,6 @@ class SignupActivity : AppCompatActivity() {
                         val builder: AlertDialog.Builder = AlertDialog.Builder(this@SignupActivity)
                         dialog = builder.setMessage("사용할 수 있는 아이디입니다.").setPositiveButton("확인",null).create()
                         dialog!!.show()
-                        NickName.setEnabled(false)//닉네임고정
-                        validate = true
                     } else{
                         val builder :AlertDialog.Builder = AlertDialog.Builder(this@SignupActivity)
                         dialog = builder.setMessage("이미 존재하는 아이디입니다.").setNegativeButton("확인",null).create()
@@ -100,7 +98,7 @@ class SignupActivity : AppCompatActivity() {
                         val builder: AlertDialog.Builder = AlertDialog.Builder(this@SignupActivity)
                         dialog = builder.setMessage("사용할 수 있는 닉네임입니다.").setPositiveButton("확인",null).create()
                         dialog!!.show()
-                        NickName.setEnabled(false)//닉네임고정
+                        NickName.isEnabled = false//닉네임고정
                         validate = true
                     } else{
                         val builder :AlertDialog.Builder = AlertDialog.Builder(this@SignupActivity)

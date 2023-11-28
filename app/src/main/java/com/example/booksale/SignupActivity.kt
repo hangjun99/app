@@ -24,6 +24,7 @@ class SignupActivity : AppCompatActivity() {
     lateinit var UserName:EditText
     lateinit var PhoneNum:EditText
     lateinit var Signup:Button
+    lateinit var useridch : Button
     lateinit var CheckBtn:Button
     private var dialog: AlertDialog? =null
     private var validate = false
@@ -39,10 +40,49 @@ class SignupActivity : AppCompatActivity() {
         PhoneNum = findViewById<EditText>(R.id.et_number)
         Signup = findViewById<Button>(R.id.btn_register)
 
+
+        // 아이디 중복 체크
+        useridch = findViewById<Button>(R.id.validateButton)
+        useridch.setOnClickListener(View.OnClickListener {
+            val ID = ID.text.toString()
+            if(validate){
+                return@OnClickListener
+            }
+            if(ID == ""){
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this@SignupActivity)
+                dialog = builder.setMessage("아이디를 입력하세요").setPositiveButton("확인",null).create()
+                dialog!!.show()
+                return@OnClickListener
+            }
+            val responseListener: Response.Listener<String?> = Response.Listener<String?>{ response ->
+                try {
+                    val jsonResponse = JSONObject(response)
+                    val success = jsonResponse.getBoolean("success")
+                    if(success){
+                        val builder: AlertDialog.Builder = AlertDialog.Builder(this@SignupActivity)
+                        dialog = builder.setMessage("사용할 수 있는 아이디입니다.").setPositiveButton("확인",null).create()
+                        dialog!!.show()
+                        NickName.setEnabled(false)//닉네임고정
+                        validate = true
+                    } else{
+                        val builder :AlertDialog.Builder = AlertDialog.Builder(this@SignupActivity)
+                        dialog = builder.setMessage("이미 존재하는 아이디입니다.").setNegativeButton("확인",null).create()
+                        dialog!!.show()
+                    }
+                } catch (e:JSONException){
+                    e.printStackTrace()
+                }
+            }
+            val idCheckActivity= IdCheckActivity(ID, responseListener)
+            val queue = Volley.newRequestQueue(this@SignupActivity)
+            queue.add(idCheckActivity)
+
+        })
+
         //닉네임 중복 체크
         CheckBtn = findViewById(R.id.CheckBtn);
         CheckBtn.setOnClickListener(View.OnClickListener{
-            val NicknameCk = NickName.getText().toString()
+            val NicknameCk = NickName.text.toString()
             if(validate){
                 return@OnClickListener
             }
@@ -97,12 +137,11 @@ class SignupActivity : AppCompatActivity() {
 
         //회원가입 버튼 이벤트
         Signup!!.setOnClickListener{
-            val id = ID!!.text.toString()
-            val pw = Password!!.text.toString()
-            val pwck = PasswordCheck!!.text.toString()
-            val nickname = NickName!!.text.toString()
-            val username = UserName!!.text.toString()
-            val phonenum = PhoneNum!!.text.toString()
+            val ID = ID!!.text.toString()
+            val Password = Password!!.text.toString()
+            val NickName = NickName!!.text.toString()
+            val UserName = UserName!!.text.toString()
+            val PhoneNum = PhoneNum!!.text.toString()
             val responseListener: Response.Listener<String?> = Response.Listener<String?>{ response ->
                 try{
                     val jsonObject = JSONObject(response)
@@ -123,7 +162,7 @@ class SignupActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
-            val signupRequestActivity = SignupRequestActivity(id, pw, username,nickname, phonenum, responseListener)
+            val signupRequestActivity = SignupRequestActivity(ID, Password, UserName,NickName, PhoneNum, responseListener)
             val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
             queue.add(signupRequestActivity)
         }

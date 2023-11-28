@@ -40,7 +40,7 @@ class SignupActivity : AppCompatActivity() {
         Signup = findViewById<Button>(R.id.btn_register)
 
         //닉네임 중복 체크
-        CheckBtn = findViewById(R.id.CheckBtn);
+        CheckBtn = findViewById(R.id.CheckBtn)
         CheckBtn.setOnClickListener(View.OnClickListener{
             val NicknameCk = NickName.getText().toString()
             if(validate){
@@ -96,13 +96,13 @@ class SignupActivity : AppCompatActivity() {
         })
 
         //회원가입 버튼 이벤트
-        Signup!!.setOnClickListener{
-            val id = ID!!.text.toString()
-            val pw = Password!!.text.toString()
-            val pwck = PasswordCheck!!.text.toString()
-            val nickname = NickName!!.text.toString()
-            val username = UserName!!.text.toString()
-            val phonenum = PhoneNum!!.text.toString()
+
+        Signup.setOnClickListener{
+            val ID = ID.text.toString()
+            val Password = Password.text.toString()
+            val NickName = NickName.text.toString()
+            val UserName = UserName.text.toString()
+            val PhoneNum = PhoneNum.text.toString()
             val responseListener: Response.Listener<String?> = Response.Listener<String?>{ response ->
                 try{
                     val jsonObject = JSONObject(response)
@@ -123,7 +123,7 @@ class SignupActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
-            val signupRequestActivity = SignupRequestActivity(id, pw, username,nickname, phonenum, responseListener)
+            val signupRequestActivity = SignupRequestActivity(ID, Password, UserName,NickName, PhoneNum, responseListener)
             val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
             queue.add(signupRequestActivity)
         }

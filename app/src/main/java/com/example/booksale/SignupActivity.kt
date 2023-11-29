@@ -96,13 +96,12 @@ class SignupActivity : AppCompatActivity() {
         })
 
         //회원가입 버튼 이벤트
-
-        Signup.setOnClickListener{
-            val ID = ID.text.toString()
-            val Password = Password.text.toString()
-            val NickName = NickName.text.toString()
-            val UserName = UserName.text.toString()
-            val PhoneNum = PhoneNum.text.toString()
+        Signup!!.setOnClickListener{
+            val ID = ID!!.text.toString()
+            val Password = Password!!.text.toString()
+            val NickName = NickName!!.text.toString()
+            val UserName = UserName!!.text.toString()
+            val PhoneNum = PhoneNum!!.text.toString()
             val responseListener: Response.Listener<String?> = Response.Listener<String?>{ response ->
                 try{
                     val jsonObject = JSONObject(response)

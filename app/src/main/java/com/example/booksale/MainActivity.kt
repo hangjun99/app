@@ -14,22 +14,22 @@ import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
-    lateinit var userID: EditText
-    lateinit var userPassword: EditText
+    lateinit var ID: EditText
+    lateinit var Password: EditText
     lateinit var Login: Button
     lateinit var Signup: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        userID = findViewById<EditText>(R.id.Put_ID)
-        userPassword = findViewById<EditText>(R.id.Put_Pass)
+        ID = findViewById<EditText>(R.id.Put_ID)
+        Password = findViewById<EditText>(R.id.Put_Pass)
         Login = findViewById<Button>(R.id.Login_btn)
         Signup = findViewById<Button>(R.id.Register_btn)
 
         //로그인 버튼 이벤트
         Login.setOnClickListener(View.OnClickListener {
-            val ID = userID.getText().toString()
-            val Password = userPassword.getText().toString()
+            val id = ID.getText().toString()
+            val pw = Password.getText().toString()
             val responseListener =
                 Response.Listener<String?> { response ->
                     try {
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                 }
-            val loginRequestActivity = LoginRequestActivity(ID, Password, responseListener)
+            val loginRequestActivity = LoginRequestActivity(id, pw, responseListener)
             val queue = Volley.newRequestQueue(applicationContext)
             queue.add(loginRequestActivity)
         })

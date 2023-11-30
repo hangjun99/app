@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -42,10 +41,6 @@ class SignupActivity : AppCompatActivity() {
 
         //닉네임 중복 체크
         CheckBtn = findViewById(R.id.CheckBtn);
-        fun removeHtmlTags(input: String): String {
-            return input.replace(Regex("<.*?>"), "")
-        }
-
         CheckBtn.setOnClickListener(View.OnClickListener{
             val NicknameCk = NickName.getText().toString()
             if(validate){
@@ -59,11 +54,9 @@ class SignupActivity : AppCompatActivity() {
             }
             val responseListener: Response.Listener<String?> = Response.Listener<String?>{ response ->
                 try {
-                    val cleanResponse = removeHtmlTags(response)
-                    Log.d("JSON_RESPONSE", response)
-                    val jsonResponse = JSONObject(cleanResponse)
-                    val success = jsonResponse.getInt("success")
-                    if(success==1){
+                    val jsonResponse = JSONObject(response)
+                    val success = jsonResponse.getBoolean("success")
+                    if(success){
                         val builder: AlertDialog.Builder = AlertDialog.Builder(this@SignupActivity)
                         dialog = builder.setMessage("사용할 수 있는 닉네임입니다.").setPositiveButton("확인",null).create()
                         dialog!!.show()
@@ -76,7 +69,6 @@ class SignupActivity : AppCompatActivity() {
                     }
                 } catch (e:JSONException){
                     e.printStackTrace()
-                    Log.e("JSON_ERROR", "JSONException occurred: " + e.message) // JSONException 로그 출력
                 }
             }
             val nicknameCheckActivity = NicknameCheckActivity(NicknameCk, responseListener)
@@ -104,58 +96,34 @@ class SignupActivity : AppCompatActivity() {
         })
 
         //회원가입 버튼 이벤트
-        Signup.setOnClickListener{
-            val id = ID.text.toString()
-            val pw = Password.text.toString()
-            val pwck = PasswordCheck.text.toString()
-            val nickname = NickName.text.toString()
-            val username = UserName.text.toString()
-            val phonenum = PhoneNum.text.toString()
-            val responseListener: Response.Listener<String> = Response.Listener<String> { response ->
-                Log.i("AppLog", "서버 응답: $response")
-                try {
-                    val jsonObject = JSONObject(response)
-                    // 여기에서 JSON 파싱을 수행하고, 필요한 정보를 가져오세요.
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                    Log.e("SignupActivity", "JSON 파싱 오류: ${e.message}")
-                    Toast.makeText(applicationContext, "서버 응답 처리 중 오류가 발생했습니다. (JSON 파싱 오류)", Toast.LENGTH_SHORT).show()
+        Signup!!.setOnClickListener{
+            val id = ID!!.text.toString()
+            val pw = Password!!.text.toString()
+            val pwck = PasswordCheck!!.text.toString()
+            val nickname = NickName!!.text.toString()
+            val username = UserName!!.text.toString()
+            val phonenum = PhoneNum!!.text.toString()
+            val responseListener: Response.Listener<String?> = Response.Listener<String?>{ response ->
+            try{
+                val jsonObject = JSONObject(response)
+                val success = jsonObject.getBoolean("success")
+                if(success){
+                    Toast.makeText(applicationContext,"회원가입이 성공적으로 처리되었습니다.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@SignupActivity, LoginActivity::class.java)
+                    startActivity(intent)
+                } else{
+                    Toast.makeText(applicationContext, "회원가입 요청처리 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    return@Listener
                 }
+            } catch (e:JSONException){
+                e.printStackTrace()
+                Toast.makeText(applicationContext,"예외 1", Toast.LENGTH_SHORT).show()
+                return@Listener
+            } catch (e:JSONException){
+                e.printStackTrace()
             }
-            val signupRequestActivity = SignupRequestActivity(id, pw, username, nickname, phonenum,
-                Response.Listener<String?> { response ->
-                    // 서버 응답을 로그에 출력
-                    Log.d("SignupActivity", "서버 응답: $response")
-
-                    try {
-                        // JSON 파싱
-                        val jsonObject = JSONObject(response)
-
-                        // 여기에서 JSON 파싱을 수행하고, 필요한 정보를 가져오세요.
-                        val success = jsonObject.optBoolean("success", false)
-                        val errorMessage = jsonObject.optString("message", "")
-                        if (success) {
-                            // 성공적인 응답 처리
-                            Toast.makeText(applicationContext, "회원가입이 성공적으로 처리되었습니다.", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this@SignupActivity, LoginActivity::class.java)
-                            startActivity(intent)
-                        } else {
-                            // 실패 시 응답 메시지를 확인하여 디버깅
-                            Log.e("SignupActivity", "회원가입 실패: $errorMessage")
-                            Toast.makeText(applicationContext, "회원가입 실패: $errorMessage", Toast.LENGTH_SHORT).show()
-                        }
-                    } catch (e: JSONException) {
-                        // JSON 파싱 오류 발생 시
-                        e.printStackTrace()
-                        Log.e("SignupActivity", "JSON 파싱 오류: ${e.message}")
-                        Toast.makeText(applicationContext, "서버 응답 처리 중 오류가 발생했습니다. (JSON 파싱 오류)", Toast.LENGTH_SHORT).show()
-                    } catch (e: JSONException) {
-                        // JSON 파싱 오류 발생 시
-                        e.printStackTrace()
-                        Log.e("SignupActivity", "JSON 파싱 오류: ${e.message}")
-                        Toast.makeText(applicationContext, "서버 응답 처리 중 오류가 발생했습니다. (JSON 파싱 오류)", Toast.LENGTH_SHORT).show()
-                    }
-                })
+        }
+            val signupRequestActivity = SignupRequestActivity(id, pw, username,nickname, phonenum, responseListener)
             val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
             queue.add(signupRequestActivity)
         }

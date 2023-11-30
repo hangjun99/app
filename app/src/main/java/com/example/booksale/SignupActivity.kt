@@ -42,6 +42,10 @@ class SignupActivity : AppCompatActivity() {
 
         //닉네임 중복 체크
         CheckBtn = findViewById(R.id.CheckBtn);
+        fun removeHtmlTags(input: String): String {
+            return input.replace(Regex("<.*?>"), "")
+        }
+
         CheckBtn.setOnClickListener(View.OnClickListener{
             val NicknameCk = NickName.getText().toString()
             if(validate){
@@ -55,9 +59,11 @@ class SignupActivity : AppCompatActivity() {
             }
             val responseListener: Response.Listener<String?> = Response.Listener<String?>{ response ->
                 try {
-                    val jsonResponse = JSONObject(response)
-                    val success = jsonResponse.getBoolean("success")
-                    if(success){
+                    val cleanResponse = removeHtmlTags(response)
+                    Log.d("JSON_RESPONSE", response)
+                    val jsonResponse = JSONObject(cleanResponse)
+                    val success = jsonResponse.getInt("success")
+                    if(success==1){
                         val builder: AlertDialog.Builder = AlertDialog.Builder(this@SignupActivity)
                         dialog = builder.setMessage("사용할 수 있는 닉네임입니다.").setPositiveButton("확인",null).create()
                         dialog!!.show()
@@ -70,6 +76,7 @@ class SignupActivity : AppCompatActivity() {
                     }
                 } catch (e:JSONException){
                     e.printStackTrace()
+                    Log.e("JSON_ERROR", "JSONException occurred: " + e.message) // JSONException 로그 출력
                 }
             }
             val nicknameCheckActivity = NicknameCheckActivity(NicknameCk, responseListener)

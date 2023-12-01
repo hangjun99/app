@@ -11,7 +11,7 @@ class NicknameCheckActivity(NickName:String,  listener: Response.Listener<String
 
     init{
         map = HashMap()
-        map["NickName"] =NickName
+        map["NickName"] = NickName
     }
     @Throws(AuthFailureError::class)
     override fun getParams(): Map<String, String?>{

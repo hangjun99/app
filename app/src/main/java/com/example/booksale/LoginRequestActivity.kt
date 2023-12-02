@@ -18,7 +18,7 @@ class LoginRequestActivity(ID:String, Password:String, listener: Response.Listen
         return map
     }
     companion object{
-        private const val URL ="http://52.78.52.80/login_test.php"
+        private const val URL ="http://13.209.64.52/login_test.php"
     }
 
 }

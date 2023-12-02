@@ -29,7 +29,7 @@ class BookInsertRequest(
         return map
     }
     companion object{
-        private const val URL ="http://52.78.52.80/book_insert.php"
+        private const val URL ="http://13.209.64.52/book_insert.php"
     }
 
 

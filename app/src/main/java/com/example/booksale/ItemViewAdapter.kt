@@ -1,20 +1,11 @@
 package com.example.booksale
 
-import android.content.Intent
 import android.os.AsyncTask
-import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
+import android.os.Parcel
+import android.os.Parcelable
 import android.widget.ListAdapter
-import android.widget.ListView
 import android.widget.SimpleAdapter
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.RequestQueue
-import com.android.volley.Response
-import com.android.volley.toolbox.Volley
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -22,21 +13,20 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import androidx.recyclerview.widget.RecyclerView.Adapter as Adapter1
 
-open class LoginActivity: AppCompatActivity() {
+class ItemViewAdapter() : Adapter1 {
     var myJSON: String? = null
     var peoples: JSONArray? = null
     var personList: ArrayList<HashMap<String, String?>>? = null
     var list: RecyclerView? = null
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.mainpage_activity)
+
+    list = findViewById<RecyclerView>(R.id.list)
+    personList = ArrayList()
+    getData("http://52.78.52.80/.php")
 
 
-        list = findViewById<RecyclerView>(R.id.list)
-        personList = ArrayList()
-        getData("http://52.78.52.80/.php")
-    }
+
 
     protected fun showList() {
         try {

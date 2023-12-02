@@ -18,6 +18,7 @@ class BookInsertActivity: AppCompatActivity() {
     lateinit var author: EditText
     lateinit var publisher: EditText
     lateinit var price_edit: EditText
+    lateinit var edit:EditText
     lateinit var explan: EditText
     lateinit var submitButton: Button
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,6 +26,7 @@ class BookInsertActivity: AppCompatActivity() {
         setContentView(R.layout.fragment_booksale)
 
         bookname = findViewById<EditText>(R.id.titleEditText)
+        edit = findViewById<EditText>(R.id.edit_Text)
         author = findViewById<EditText>(R.id.writerEditText)
         publisher = findViewById<EditText>(R.id.publisher)
         price_edit = findViewById<EditText>(R.id.price_edit)
@@ -34,9 +36,12 @@ class BookInsertActivity: AppCompatActivity() {
         //서적등록
         submitButton.setOnClickListener{
             val BookName = bookname!!.text.toString()
+            val editt = edit!!.text.toString()
+            val Edit:Int = editt.toInt()
             val Author = author!!.text.toString()
             val Publisher = publisher!!.text.toString()
-            val HopePrice = price_edit!!.text.toString()
+            val price = price_edit!!.text.toString()
+            val HopePrice:Int = price.toInt()
             val Description = explan!!.text.toString()
             val responseListener: Response.Listener<String?> = Response.Listener<String?>{ response ->
                 try{
@@ -58,7 +63,7 @@ class BookInsertActivity: AppCompatActivity() {
                     e.printStackTrace()
                 }
             }
-            val bookInsertActivity = BookInsertRequest(UserInd = , BookName, Edit = ,Author,Publisher, HopePrice = ,Description ,responseListener)
+            val bookInsertActivity = BookInsertRequest(BookName, Edit,Author,Publisher, HopePrice ,Description ,responseListener)
             val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
             queue.add(bookInsertActivity)
 

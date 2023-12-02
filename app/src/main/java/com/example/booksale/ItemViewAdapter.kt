@@ -1,11 +1,14 @@
-package com.example.booksale
-
 import android.os.AsyncTask
-import android.os.Parcel
-import android.os.Parcelable
-import android.widget.ListAdapter
-import android.widget.SimpleAdapter
-import androidx.recyclerview.widget.RecyclerView
+import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley
+import com.example.booksale.BookInsertRequest
+import com.example.booksale.LoginRequestActivity
+import com.example.booksale.R
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
@@ -13,87 +16,52 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
-import androidx.recyclerview.widget.RecyclerView.Adapter as Adapter1
 
-class ItemViewAdapter() : Adapter1 {
-    var myJSON: String? = null
-    var peoples: JSONArray? = null
-    var personList: ArrayList<HashMap<String, String?>>? = null
-    var list: RecyclerView? = null
+class ItemViewAdapter : AppCompatActivity() {
 
-    list = findViewById<RecyclerView>(R.id.list)
-    personList = ArrayList()
-    getData("http://52.78.52.80/.php")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.item_article)
 
+        val titleView = findViewById<TextView>(R.id.titleTextView)
+        val writerView = findViewById<TextView>(R.id.writerText)
+        val publisherView = findViewById<TextView>(R.id.publisherText)
+        val priceView = findViewById<TextView>(R.id.priceTextView)
+        val Button = findViewById<Button>(R.id.chatBtn)
 
-
-
-    protected fun showList() {
-        try {
-            val jsonObj = JSONObject(myJSON)
-            peoples = jsonObj.getJSONArray(TAG_RESULTS)
-            for (i in 0 until peoples.length()) {
-                val c = peoples.getJSONObject(i)
-                val id = c.getString(TAG_ID)
-                val name = c.getString(TAG_NAME)
-                val address = c.getString(TAG_ADD)
-                val persons = HashMap<String, String?>()
-                persons[TAG_ID] = id
-                persons[TAG_NAME] = name
-                persons[TAG_ADD] = address
-                personList!!.add(persons)
-            }
-            val adapter: ListAdapter = SimpleAdapter(
-                this@LoginActivity,
-                personList,
-                R.layout.item_article,
-                arrayOf<String>(TAG_ID, TAG_NAME, TAG_ADD),
-                intArrayOf(android.R.id.id, android.R.id.name, android.R.id.address)
-            )
-            list!!.adapter = adapter
-        } catch (e: JSONException) {
-            e.printStackTrace()
-        }
-    }
-    private fun getData(url: String?) {
-        abstract class GetDataJSON :
-            AsyncTask<String?, Void?, String?>() {
-            protected override fun doInBackground(vararg params: String?): String? {
-                val uri = params[0]
-                var bufferedReader: BufferedReader? = null
-                return try {
-                    val url = URL(uri)
-                    val con = url.openConnection() as HttpURLConnection
-                    val sb = StringBuilder()
-                    bufferedReader = BufferedReader(InputStreamReader(con.inputStream))
-                    var json: String
-                    while (bufferedReader.readLine().also { json = it } != null) {
-                        sb.append(
-                            """
-                                $json
-                                
-                                """.trimIndent()
-                        )
+        val BookName = titleView.text.toString()
+        val Author = writerView.text.toString()
+        val Publisher = publisherView.text.toString()
+        val HopePrice = priceView.text.toString()
+        val responseListener =
+            Response.Listener<String?> { response ->
+                try {
+                    val jsonObject = JSONObject(response)
+                    val success = jsonObject.getBoolean("success")
+                    if (success) {
+                        val msg = jsonObject.getString("")
+                        Toast.makeText(
+                            applicationContext,
+                            " :$msg",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
+                        return@Listener
                     }
-                    sb.toString().trim { it <= ' ' }
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                    Toast.makeText(applicationContext, "예외 1", Toast.LENGTH_SHORT).show()
+                    return@Listener
                 } catch (e: Exception) {
-                    null
+                    e.printStackTrace()
                 }
             }
-
-            override fun onPostExecute(result: String?) {
-                myJSON = result
-                showList()
-            }
-        }
-
-        val g = GetDataJSON()
-        g.execute(url)
+        val BookInsertRequest = BookInsertRequest(BookName, Author, Publisher,HopePrice,responseListener)
+        val queue = Volley.newRequestQueue(applicationContext)
+        queue.add(BookInsertRequest)
     }
-    companion object {
-        private const val TAG_RESULTS = "result"
-        private const val TAG_ID = "id"
-        private const val TAG_NAME = "name"
-        private const val TAG_ADD = "address"
-    }
+
 }
+
+

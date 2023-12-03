@@ -1,5 +1,6 @@
 package com.example.booksale
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -41,7 +42,9 @@ class LoginActivity : AppCompatActivity(){
                 R.id.fragment_chatList->{
                     bottomNavigation.itemIconTintList = ContextCompat.getColorStateList(this, R.color.color_bnv2)
                     bottomNavigation.itemTextColor = ContextCompat.getColorStateList(this, R.color.color_bnv2)
-                    ChatlistActivity()
+                    val intent = Intent(this@LoginActivity,ChatlistActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
                 else -> {
                     bottomNavigation.itemIconTintList = ContextCompat.getColorStateList(this, R.color.color_bnv1)

@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
                         val jsonObject = JSONObject(response)
                         val success = jsonObject.getBoolean("success")
                         if (success) {
-                            val msg = jsonObject.getString("ID")
+                            val msg = jsonObject.getString("nickName")
                             Toast.makeText(
                                 applicationContext,
                                 "로그인 성공. ID :$msg",

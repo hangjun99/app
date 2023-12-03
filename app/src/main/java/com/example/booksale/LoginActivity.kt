@@ -10,13 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class LoginActivity : AppCompatActivity(){
-    //private lateinit var recyclerView: RecyclerView
-
+    private lateinit var recyclerView: RecyclerView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_booksale)
+        setContentView(R.layout.mainpage_activity)
 
-<<<<<<< HEAD
         // 등록된 상품을 홈 화면에 보여주기
         recyclerView = findViewById(R.id.list)
 
@@ -59,14 +57,8 @@ class LoginActivity : AppCompatActivity(){
             true
         }
         bottomNavigation.selectedItemId = R.id.fragment_home
-=======
->>>>>>> ff8c44d22ca3131b4437f11a1aa184a95ffede8b
     }
 
-}
 
-<<<<<<< HEAD
 
 }
-=======
->>>>>>> ff8c44d22ca3131b4437f11a1aa184a95ffede8b

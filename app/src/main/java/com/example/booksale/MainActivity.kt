@@ -2,6 +2,7 @@ package com.example.booksale
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -42,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                                 "로그인 성공. ID :$msg",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            Log.d("LoginActivity", "로그인 성공")
                             val intent = Intent(this@MainActivity,LoginActivity::class.java)
                             startActivity(intent)
                             finish()

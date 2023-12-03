@@ -102,7 +102,6 @@ class SignupActivity : AppCompatActivity() {
                         dialog = builder.setMessage("사용할 수 있는 닉네임입니다.").setPositiveButton("확인",null).create()
                         dialog!!.show()
                         NickName.isEnabled = false//닉네임고정
-                        validate = true
                         nicknameValidation = true
                     } else{
                         val builder :AlertDialog.Builder = AlertDialog.Builder(this@SignupActivity)
@@ -111,32 +110,13 @@ class SignupActivity : AppCompatActivity() {
                         nicknameValidation = false
                     }
                 } catch (e:JSONException){
-                    Toast.makeText(applicationContext,"대용", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext,"닉네임 생성 오류", Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
                 }
             }
             val nicknameCheckActivity = NicknameCheckActivity(nicknameCk, responseListener)
-            val queue = Volley.newRequestQueue(this@SignupActivity)
+            val queue = Volley.newRequestQueue(applicationContext)
             queue.add(nicknameCheckActivity)
-        })
-
-        //비밀번호 일치 여부
-        PasswordCheck.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // no-op
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                // no-op
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                val password = Password.text.toString()
-                val confirmPassword = s.toString()
-
-                // 비밀번호가 일치하지 않으면 회원가입 버튼 비활성화
-                Signup.isEnabled = password == confirmPassword
-            }
         })
 
         //회원가입 버튼 이벤트

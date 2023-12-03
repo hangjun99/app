@@ -16,16 +16,15 @@ class LoginActivity : AppCompatActivity(){
 
         // 등록된 상품을 홈 화면에 보여주기
         recyclerView = findViewById(R.id.list)
-
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        // 하단 버튼 눌러 화면 전환
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.fragment_home -> {
-                    bottomNavigation.itemIconTintList = ContextCompat.getColorStateList(this, R.color.color_bnv1)
-                    bottomNavigation.itemTextColor = ContextCompat.getColorStateList(this, R.color.color_bnv1)
-                    LoginActivity()
+                    val intent = Intent(this@LoginActivity, LoginActivity::class.java)
+                    startActivity(intent)
                     // Respond to navigation item 1 click
                 }
                 R.id.fragment_booksale -> {
@@ -40,9 +39,8 @@ class LoginActivity : AppCompatActivity(){
                     // Respond to navigation item 3 click
                 }
                 R.id.fragment_chatList->{
-                    bottomNavigation.itemIconTintList = ContextCompat.getColorStateList(this, R.color.color_bnv2)
-                    bottomNavigation.itemTextColor = ContextCompat.getColorStateList(this, R.color.color_bnv2)
-                    ChatlistActivity()
+                    val intent = Intent(this@LoginActivity, ChatlistActivity::class.java)
+                    startActivity(intent)
                 }
                 else -> {
                     bottomNavigation.itemIconTintList = ContextCompat.getColorStateList(this, R.color.color_bnv1)

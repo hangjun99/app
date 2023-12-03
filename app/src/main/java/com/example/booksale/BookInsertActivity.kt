@@ -2,6 +2,7 @@ package com.example.booksale
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -36,6 +37,7 @@ class BookInsertActivity: AppCompatActivity() {
         submitButton.setOnClickListener{
             val BookName = bookname.text.toString()
             val Edit = edit.text.toString()
+            Log.d("BookInsertActivity", "Edit: $Edit")
             val Author = author.text.toString()
             val Publisher = publisher.text.toString()
             val HopePrice = price_edit.text.toString()
@@ -61,8 +63,10 @@ class BookInsertActivity: AppCompatActivity() {
             }
             val bookInsertActivity = BookInsertRequest("1",BookName, Edit ,Author,Publisher, HopePrice ,Description ,responseListener)
             val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
+            Thread{
+                queue.add(bookInsertActivity)
+            }.start()
             queue.add(bookInsertActivity)
-
         }
 
 

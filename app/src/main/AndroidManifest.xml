@@ -36,6 +36,12 @@
         <activity android:name=".ChatlistActivity"
             android:exported="true">
         </activity>
+        <activity android:name=".BookInsertActivity"
+            android:exported="true">
+        </activity>
+        <activity android:name=".SearchActivity"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

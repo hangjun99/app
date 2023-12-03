@@ -42,9 +42,7 @@ class LoginActivity : AppCompatActivity(){
                 R.id.fragment_chatList->{
                     bottomNavigation.itemIconTintList = ContextCompat.getColorStateList(this, R.color.color_bnv2)
                     bottomNavigation.itemTextColor = ContextCompat.getColorStateList(this, R.color.color_bnv2)
-                    val intent = Intent(this@LoginActivity,ChatlistActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                    ChatlistActivity()
                 }
                 else -> {
                     bottomNavigation.itemIconTintList = ContextCompat.getColorStateList(this, R.color.color_bnv1)

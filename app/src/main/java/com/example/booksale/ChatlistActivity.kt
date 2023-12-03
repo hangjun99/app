@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 class ChatlistActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_chat_list)
+        setContentView(R.layout.activity_chat_room)
 
 
     }

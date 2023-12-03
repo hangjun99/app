@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/home"
+    <item android:id="@+id/fragment_home"
         android:icon="@drawable/ic_baseline_home"
         android:title="홈"/>
     <item
-        android:id="@+id/booksale"
+        android:id="@+id/fragment_booksale"
         android:icon="@drawable/ic_baseline_booksale"
         android:title="판매"/>
     <item
-        android:id="@+id/search"
+        android:id="@+id/fragment_search"
         android:icon="@drawable/ic_baseline_search"
         android:title="검색"/>
 
-    <item android:id="@+id/chatList"
+    <item android:id="@+id/fragment_chatList"
         android:icon="@drawable/ic_baseline_chat"
         android:title="채팅"/>
 
-    <item android:id="@+id/myPage"
+    <item android:id="@+id/fragment_myPage"
         android:icon="@drawable/ic_baseline_person"
         android:title="마이"/>
 </menu>

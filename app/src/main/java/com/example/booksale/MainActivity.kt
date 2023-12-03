@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity() {
                                 "로그인 성공. ID :$msg",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            val intent = Intent(this@MainActivity,LoginActivity::class.java)
+                            startActivity(intent)
+                            finish()
                         } else {
                             Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
                             return@Listener

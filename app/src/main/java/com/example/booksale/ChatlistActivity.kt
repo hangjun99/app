@@ -44,8 +44,8 @@ class ChatlistActivity : AppCompatActivity() {
         }
 
         socket.on("new_message") { msg ->
-            val message = msg
-            Toast.makeText(applicationContext, message.toString(), Toast.LENGTH_SHORT).show()
+            val message = msg[0].toString()
+            messageEditText.setText(message)
             // 메시지 수신 시 하고 창에 받은 메세지 보여주는 코드 추가해주세요
         }
 

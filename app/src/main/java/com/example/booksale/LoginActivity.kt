@@ -33,7 +33,9 @@ class LoginActivity : AppCompatActivity(){
                     bottomNavigation.itemIconTintList = ContextCompat.getColorStateList(this, R.color.color_bnv2)
                     bottomNavigation.itemTextColor = ContextCompat.getColorStateList(this, R.color.color_bnv2)
                     Toast.makeText(applicationContext, "booksale", Toast.LENGTH_SHORT).show()
-                    // Respond to navigation item 2 click
+                    val intent = Intent(this, BookInsertActivity::class.java)
+                    startActivity(intent)
+                // Respond to navigation item 2 click
                 }
                 R.id.fragment_search -> {
                     bottomNavigation.itemIconTintList = ContextCompat.getColorStateList(this, R.color.color_bnv2)
@@ -44,7 +46,6 @@ class LoginActivity : AppCompatActivity(){
                 R.id.fragment_chatList->{
                     bottomNavigation.itemIconTintList = ContextCompat.getColorStateList(this, R.color.color_bnv2)
                     bottomNavigation.itemTextColor = ContextCompat.getColorStateList(this, R.color.color_bnv2)
-                    Toast.makeText(applicationContext, "챗", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, ChatlistActivity::class.java)
                     startActivity(intent)
                 }

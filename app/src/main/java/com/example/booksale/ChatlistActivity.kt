@@ -45,6 +45,7 @@ class ChatlistActivity : AppCompatActivity() {
 
         socket.on("new_message") { msg ->
             val message = msg[0].toString()
+            //이거는 메세지 제대로 오는지 확인하는거라서 나중에 빼시고 사용하세요
             messageEditText.setText(message)
             // 메시지 수신 시 하고 창에 받은 메세지 보여주는 코드 추가해주세요
         }

@@ -6,8 +6,11 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.android.volley.Response
+import com.android.volley.toolbox.Volley
 import io.socket.client.IO
 import io.socket.client.Socket
+import org.json.JSONException
 import org.json.JSONObject
 import java.net.URISyntaxException
 
@@ -48,6 +51,9 @@ class ChatlistActivity : AppCompatActivity() {
             //이거는 메세지 제대로 오는지 확인하는거라서 나중에 빼시고 사용하세요
             messageEditText.setText(message)
             // 메시지 수신 시 하고 창에 받은 메세지 보여주는 코드 추가해주세요
+
+            displayReceivedMessage(message)
+
         }
 
         sendButton.setOnClickListener {
@@ -55,6 +61,37 @@ class ChatlistActivity : AppCompatActivity() {
             socket.emit("new_message", message, chatroom)
             messageEditText.text.clear()
             //자신의 nickname과 message로 보낸 메세지 보여주는 코드 추가해주세요
+
+            // 자신이 보낸 메세지를 UI에 표시
+            displaySentMessage(nickname, message)
+
+            // 메시지 입력란 초기화
+            messageEditText.text.clear()
+
+            val responseListener: Response.Listener<String?> =
+                Response.Listener<String?> { response ->
+                    try {
+                        val jsonObject = JSONObject(response)
+                        val success = jsonObject.getBoolean("success")
+                        if (success) {
+                            Toast.makeText(applicationContext, "메시지 전송", Toast.LENGTH_SHORT).show()
+                            Log.d("ChatlistActivity", "메시지 전송성공")
+                        } else {
+                            Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
+                            return@Listener
+                        }
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                        Toast.makeText(applicationContext, "예외 1", Toast.LENGTH_SHORT).show()
+                        return@Listener
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            val msgRequestActivity = MsgRequestActivity("1-2","1", "2", message, responseListener)
+            val queue = Volley.newRequestQueue(applicationContext)
+            queue.add(msgRequestActivity)
+
         }
 
 
@@ -64,4 +101,17 @@ class ChatlistActivity : AppCompatActivity() {
         socket.disconnect()
         socket.emit("left", chatroom)
     }
+    // UI에 받은 메시지를 표시하는 함수
+    private fun displayReceivedMessage(message: String) {
+        // 받은 메시지를 화면에 표시하는 코드를 추가
+        val formattedMessage = "상대방: $message"
+        messageEditText.setText(formattedMessage)
+    }
+    // UI에 자신이 보낸 메시지를 표시하는 함수
+    private fun displaySentMessage(senderNickname: String, message: String) {
+        // 자신이 보낸 메시지를 화면에 표시하는 코드를 추가
+        val sentMessage = "$senderNickname: $message"
+        messageEditText.setText(sentMessage)
+    }
+
 }

@@ -2,6 +2,7 @@ package com.example.booksale
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,6 +20,21 @@ class LoginActivity : AppCompatActivity(){
         recyclerView = findViewById(R.id.list)
 
         recyclerView.layoutManager = LinearLayoutManager(this)
+        val adapter = ItemActivity()
+        adapter.addItem(ItemActivity.Product("경영전략","장세진","박영사","12000"))
+        recyclerView.adapter = adapter
+        adapter.setOnItemClickListener(object: ItemActivity.OnProductItemClicklistener(){
+            override fun onItemClick(holder: ItemActivity.ViewHolder?, view: View?, position:Int){
+                val item: ItemActivity.Product = adapter.getItem(position)
+                Toast.makeText(applicationContext,
+                    """${
+                        """책이름 : ${item.bookName}
+                            저자 : ${item.author}
+                            출판사 : ${item.publisher}"""}
+                            가격 : ${item.hopePrice}""", Toast.LENGTH_LONG
+                ).show()
+            }
+        })
 
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
         bottomNavigation.setOnItemSelectedListener { item ->

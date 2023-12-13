@@ -32,6 +32,8 @@ class BookInsertActivity: AppCompatActivity() {
         price_edit = findViewById<EditText>(R.id.price_edit)
         explan = findViewById<EditText>(R.id.explan)
         submitButton = findViewById<Button>(R.id.submitButton)
+        val UserInd = intent.getIntExtra("UserInd",0)
+        val NickName = intent.getStringExtra("NickName").toString()
 
         //서적등록
         submitButton.setOnClickListener{
@@ -49,8 +51,6 @@ class BookInsertActivity: AppCompatActivity() {
                     val success = jsonObject.getBoolean("success")
                     if(success){
                         Toast.makeText(applicationContext,"판매상품이 등록되었습니다..", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@BookInsertActivity, ItemViewAdapter::class.java)
-                        startActivity(intent)
                     } else{
                         Toast.makeText(applicationContext, "판매상품 등록 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
                         return@Listener
@@ -61,11 +61,8 @@ class BookInsertActivity: AppCompatActivity() {
                     return@Listener
                 }
             }
-            val bookInsertActivity = BookInsertRequest("1",BookName, Edit ,Author,Publisher, HopePrice ,Description ,responseListener)
+            val bookInsertActivity = BookInsertRequest(UserInd.toString(), NickName, BookName, Edit, Author, Publisher, HopePrice, Description, responseListener)
             val queue: RequestQueue = Volley.newRequestQueue(applicationContext)
-            Thread{
-                queue.add(bookInsertActivity)
-            }.start()
             queue.add(bookInsertActivity)
         }
 

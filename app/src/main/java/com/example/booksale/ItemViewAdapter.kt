@@ -28,34 +28,9 @@ class ItemViewAdapter : AppCompatActivity() {
         val HopePrice =
             priceView.text.toString()
 
-        val responseListener =
-            Response.Listener<String?> { response ->
-                try {
-                    val jsonObject = JSONObject(response)
-                    val success = jsonObject.getBoolean("success")
-                    if (success) {
-                        val msg = jsonObject.getString("")
-                        Toast.makeText(
-                            applicationContext,
-                            " :$msg",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Toast.makeText(applicationContext, "실패", Toast.LENGTH_SHORT).show()
-                        return@Listener
-                    }
-                } catch (e: JSONException) {
-                    e.printStackTrace()
-                    Toast.makeText(applicationContext, "예외 1", Toast.LENGTH_SHORT).show()
-                    return@Listener
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-            }
-        val BookInsertRequest = BookInsertRequest("1",BookName, "1",Author, Publisher, HopePrice,
-            "",responseListener)
-        val queue = Volley.newRequestQueue(applicationContext)
-        queue.add(BookInsertRequest)
-    }
+        Button.setOnClickListener {
+
+        }
+        }
 
 }

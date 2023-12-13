@@ -6,8 +6,7 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 
-class SignupRequestActivity(
-    ID:String, Password:String, UserName:String, NickName:String, PhoneNum: String,
+class SignupRequestActivity(ID:String, Password:String, UserName:String, NickName:String, PhoneNum: String,
     listener: Response.Listener<String?>)
     : StringRequest(Method.POST, URL, listener, null){
     private val applicationContext: Context? = null

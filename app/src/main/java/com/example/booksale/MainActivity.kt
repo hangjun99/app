@@ -37,14 +37,17 @@ class MainActivity : AppCompatActivity() {
                         val jsonObject = JSONObject(response)
                         val success = jsonObject.getBoolean("success")
                         if (success) {
-                            val msg = jsonObject.getString("nickName")
+                            val NickName = jsonObject.getString("nickName")
+                            val UserInd = jsonObject.getInt("userInd")
                             Toast.makeText(
                                 applicationContext,
-                                "로그인 성공. ID :$msg",
+                                "로그인 성공. ID :$NickName , $UserInd",
                                 Toast.LENGTH_SHORT
                             ).show()
                             Log.d("LoginActivity", "로그인 성공")
                             val intent = Intent(this@MainActivity,LoginActivity::class.java)
+                            intent.putExtra("UserInd", UserInd)
+                            intent.putExtra("NickName", NickName)
                             startActivity(intent)
                             finish()
                         } else {

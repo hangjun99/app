@@ -23,8 +23,10 @@ import java.util.Locale
 class ChatlistActivity : AppCompatActivity() {
     lateinit var sendButton: Button
     lateinit var messageEditText: EditText
+    lateinit var userInd: String
     lateinit var nickname: String
     lateinit var chatroom: String
+    lateinit var opponentNickname: String
 
     private lateinit var socket: Socket
     private lateinit var chatAdapter: ChatAdapter
@@ -39,8 +41,10 @@ class ChatlistActivity : AppCompatActivity() {
         //nickname chatroom 입력하세요
         //nickname = ~~~~~
         //chatroom = ~~~~~
-        nickname = "dy"
-        chatroom = "1-2"
+        userInd = intent.getStringExtra("UserInd").toString()
+        nickname = intent.getStringExtra("Nickname").toString()
+        chatroom = intent.getStringExtra("chatRoom").toString()
+        opponentNickname = intent.getStringExtra("opponentNickname").toString()
 
         val recyclerView: RecyclerView = findViewById(R.id.chatRecyclerView)
         chatAdapter = ChatAdapter(chatList)
@@ -64,10 +68,15 @@ class ChatlistActivity : AppCompatActivity() {
         socket.on("new_message") { msg ->
             val message = msg[0].toString()
             // 메시지 수신 시 하고 창에 받은 메세지 보여주는 코드 추가해주세요
-            displayReceivedMessage(message)
+            displayReceivedMessage(opponentNickname, message)
         }
 
         sendButton.setOnClickListener {
+            Toast.makeText(
+                applicationContext,
+                "$nickname, $opponentNickname, $chatroom, $userInd",
+                Toast.LENGTH_SHORT
+            ).show()
             val message = messageEditText.text.toString()
             socket.emit("new_message", message, chatroom)
             messageEditText.text.clear()
@@ -99,7 +108,7 @@ class ChatlistActivity : AppCompatActivity() {
                         e.printStackTrace()
                     }
                 }
-            val msgRequestActivity = MsgRequestActivity("1-2","1", "2", message, responseListener)
+            val msgRequestActivity = MsgRequestActivity(chatroom, nickname, opponentNickname, message, responseListener)
             val queue = Volley.newRequestQueue(applicationContext)
             queue.add(msgRequestActivity)
 
@@ -113,20 +122,20 @@ class ChatlistActivity : AppCompatActivity() {
     }
 
     // UI에 받은 메시지를 표시하는 함수
-    private fun displayReceivedMessage(message: String) {
+    private fun displayReceivedMessage(opponentNickname: String, message: String) {
         // 받은 메시지를 화면에 표시하는 코드를 추가
-        val formattedMessage = "상대방: $message"
+        val formattedMessage = "$opponentNickname: $message"
         runOnUiThread {
-            chatAdapter.addMessage(ChatMessage("상대방", message))
+            chatAdapter.addMessage(ChatMessage(opponentNickname, message))
         }
     }
     // UI에 자신이 보낸 메시지를 표시하는 함수
-    private fun displaySentMessage(senderNickname: String, message: String) {
+    private fun displaySentMessage(Nickname: String, message: String) {
         // 자신이 보낸 메시지를 화면에 표시하는 코드를 추가
-        val sentMessage = "$senderNickname: $message"
+        val sentMessage = "$Nickname: $message"
         Log.d("ChatlistActivity", "Displaying Received Message: $message")
         runOnUiThread {
-            chatAdapter.addMessage(ChatMessage(senderNickname, message))
+            chatAdapter.addMessage(ChatMessage(Nickname, message))
         }
     }
 

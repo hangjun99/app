@@ -6,23 +6,13 @@ import com.android.volley.AuthFailureError
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 
-class BookInsertRequest(
-    UserInd: String, NickName: String, BookName:String, Edit: String, Author:String, Publisher: String, HopePrice:String, Description:String,
-    listener: Response.Listener<String?>)
-    :StringRequest(Method.POST, URL, listener, null){
+class LastMsgRequestActivity (ChatRoom: String, listener: Response.Listener<String?>) : StringRequest(Method.POST, URL, listener, null){
     private val applicationContext: Context? = null
     private val map: MutableMap<String, String>
 
     init{
         map = HashMap()
-        map["UserInd"] = UserInd
-        map["NickName"] = NickName
-        map["BookName"] = BookName
-        map["Edit"] = Edit
-        map["Author"] = Author
-        map["Publisher"] = Publisher
-        map["HopePrice"] = HopePrice
-        map["Description"] = Description
+        map["ChatRoom"] = ChatRoom
     }
     val listener = Response.Listener<String?> { response ->
         Toast.makeText(applicationContext, "데이터 전송이 완료되었습니다.", Toast.LENGTH_SHORT).show()
@@ -33,8 +23,6 @@ class BookInsertRequest(
         return map
     }
     companion object{
-        private const val URL ="http://13.209.64.52/book_insert.php"
+        private const val URL ="http://13.209.64.52/unreadmsg_check.php"
     }
-
-
 }

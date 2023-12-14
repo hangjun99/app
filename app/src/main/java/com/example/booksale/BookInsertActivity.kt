@@ -51,6 +51,10 @@ class BookInsertActivity: AppCompatActivity() {
                     val success = jsonObject.getBoolean("success")
                     if(success){
                         Toast.makeText(applicationContext,"판매상품이 등록되었습니다..", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.putExtra("UserInd", UserInd)
+                        intent.putExtra("NickName", NickName)
+                        startActivity(intent)
                     } else{
                         Toast.makeText(applicationContext, "판매상품 등록 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
                         return@Listener

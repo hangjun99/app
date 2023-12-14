@@ -144,7 +144,7 @@ class SignupActivity : AppCompatActivity() {
                                     "회원가입이 성공적으로 처리되었습니다.",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                                val intent = Intent(this@SignupActivity, LoginActivity::class.java)
+                                val intent = Intent(this@SignupActivity, MainActivity::class.java)
                                 startActivity(intent)
                             } else {
                                 Toast.makeText(
